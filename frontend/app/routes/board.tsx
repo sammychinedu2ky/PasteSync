@@ -24,7 +24,7 @@ const fetchBoardData = async (boardId: string) => {
     if (!response.ok) {
       throw new Error("Failed to fetch board data");
     }
-    return response.json();
+    return response.text();
   } catch (error) {
     console.error("Error fetching board data:", error);
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -53,12 +53,8 @@ export default function BoardRoute() {
   const loaderData = useLoaderData<LoaderData>();
   
   useEffect(() => {
-    const jsonStringify = JSON.stringify(loaderData.boardData);
-    console.log(jsonStringify);
-    console.log('my loader data is above')
     if (!loaderData.boardData) {
       toast.error("Failed to fetch board data.");
-     // window.location.href = "/404";
     }
   }, [loaderData.boardData]);
 

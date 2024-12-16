@@ -19,8 +19,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<IBoardService, BoardService>();
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = "localhost:6379"; // Update with your Redis connection string
-
+    options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
 });
 
 var app = builder.Build();
@@ -35,14 +34,12 @@ app.MapHub<BoardHub>("api/pastesync");
 
 app.MapGet("/", () => "Hello World!");
 
-// Get board content by ID
 app.MapGet("api/board/{id}", async (string id, IBoardService boardService) =>
 {
     string boardContent = await boardService.GetBoardAsync(id);
-    return Results.Ok(new { BoardId = id, Content = boardContent });
+    return boardContent;
 });
 
-// Save board content by ID
 app.MapPost("api/board/{id}", async (string id, [FromBody] string content, IBoardService boardService) =>
 {
     await boardService.SaveBoardAsync(id, content);

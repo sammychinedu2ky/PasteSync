@@ -15,8 +15,8 @@ export function RealTimeBoard({ boardData, boardId }: { boardData: any; boardId:
     const [isTyping, setIsTyping] = useState(false);
     const editorRef = useRef<any>(null);
     useEffect(() => {
-        if (boardData.content && boardData.content.length > 0) {
-            setBoardContent(boardData.content);
+        if (boardData && boardData.length > 0) {
+            setBoardContent(boardData);
         }
     }, []);
 
