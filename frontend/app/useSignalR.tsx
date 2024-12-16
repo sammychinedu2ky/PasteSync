@@ -21,10 +21,8 @@ export function useSignalR(boardId: string) {
         newConnection
             .start()
             .then(() => {
-                console.log("Connected to SignalR hub");
                 if (newConnection.state === HubConnectionState.Connected) {
                     setConnection(newConnection);
-                    console.log("Joining boarssssssssssssssd:", boardId);
                     newConnection.invoke("JoinBoard", boardId);
                 }
             })

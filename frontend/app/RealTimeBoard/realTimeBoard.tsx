@@ -21,7 +21,6 @@ export function RealTimeBoard({ boardData, boardId }: { boardData: any; boardId:
     }, []);
 
     useEffect(() => {
-        console.log('Debounced Content:', debouncedBoardContent);
         if (isTyping) {
             updateBoard(boardContent);
         }
