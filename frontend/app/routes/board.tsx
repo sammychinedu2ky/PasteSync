@@ -52,11 +52,7 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
 export default function BoardRoute() {
   const loaderData = useLoaderData<LoaderData>();
   
-  useEffect(() => {
-    if (!loaderData.boardData) {
-      toast.error("Failed to fetch board data.");
-    }
-  }, [loaderData.boardData]);
+
 
   const { boardData, boardId } = loaderData;
   return (

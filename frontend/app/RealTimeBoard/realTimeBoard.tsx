@@ -14,6 +14,7 @@ export function RealTimeBoard({ boardData, boardId }: { boardData: any; boardId:
     const [debouncedBoardContent] = useDebounce(null, 500);
     const [isTyping, setIsTyping] = useState(false);
     const editorRef = useRef<any>(null);
+    console.log('I am in the component')
     useEffect(() => {
         if (boardData && boardData.length > 0) {
             setBoardContent(boardData);

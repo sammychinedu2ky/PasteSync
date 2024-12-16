@@ -96,7 +96,6 @@ public class BoardHub : Hub<IBoardClient>
     }
     public async Task JoinBoard(string boardId)
     {
-        Console.WriteLine($"User {Context.ConnectionId} joined board {boardId}");
         await Groups.AddToGroupAsync(Context.ConnectionId, boardId);
     }
 

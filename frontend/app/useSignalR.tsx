@@ -1,28 +1,30 @@
-import { useState, useEffect } from "react";
-import { HubConnectionBuilder, HubConnection, HubConnectionState, } from "@microsoft/signalr";
+import { useState, useEffect, useRef } from "react";
+import { HubConnectionBuilder, HubConnection, HubConnectionState } from "@microsoft/signalr";
 import * as signalR from '@microsoft/signalr';
 
-// Custom hook for SignalR
 export function useSignalR(boardId: string) {
-    const [connection, setConnection] = useState<HubConnection | null>(null);
+    const connectionRef = useRef<HubConnection | null>(null);
     const [boardContent, setBoardContent] = useState<string>("");
+
     useEffect(() => {
+        if (connectionRef.current) {
+            return; 
+        }
+
         const newConnection = new HubConnectionBuilder()
-            .withUrl("http://localhost:5295/api/pastesync",
-                {
-                    skipNegotiation: true,
-                    transport: signalR.HttpTransportType.WebSockets,
-                withCredentials: false,             }
-            )
+            .withUrl("http://localhost:5295/api/pastesync", {
+                skipNegotiation: true,
+                transport: signalR.HttpTransportType.WebSockets,
+                withCredentials: false,
+            })
             .withAutomaticReconnect()
-            // .configureLogging(signalR.LogLevel.Trace)
             .build();
 
         newConnection
             .start()
             .then(() => {
                 if (newConnection.state === HubConnectionState.Connected) {
-                    setConnection(newConnection);
+                    connectionRef.current = newConnection; // Persist the connection in ref
                     newConnection.invoke("JoinBoard", boardId);
                 }
             })
@@ -30,23 +32,21 @@ export function useSignalR(boardId: string) {
                 console.log("Error connecting to SignalR hub:", err);
             });
 
-
         newConnection.on("ReceiveText", (content: string) => {
-            setBoardContent(content); 
+            setBoardContent(content);
         });
-
+        console.log('i am in the use effect')
         return () => {
             if (newConnection.state === HubConnectionState.Connected) {
                 newConnection.stop();
             }
         };
-    }, []);
+    }, []); 
 
-    // Function to update board content
     const updateBoard = async (content: string) => {
-        if (connection?.state === HubConnectionState.Connected) {
+        if (connectionRef.current?.state === HubConnectionState.Connected) {
             try {
-                await connection.invoke("UpdateBoard", boardId, content);
+                await connectionRef.current.invoke("UpdateBoard", boardId, content);
                 console.log("Board content updated");
             } catch (error) {
                 console.error("Error updating board:", error);
