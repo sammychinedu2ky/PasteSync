@@ -10,17 +10,18 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policyBuilder =>
     {
-        policyBuilder.WithOrigins("http://localhost:5173", "http://localhost:5295")
+        policyBuilder.WithOrigins("http://localhost:5295")
            .AllowAnyMethod()
            .AllowCredentials()
            .AllowAnyHeader();
     });
 });
 builder.Services.AddSingleton<IBoardService, BoardService>();
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
-});
+// builder.Services.AddStackExchangeRedisCache(options =>
+// {
+//     options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
+// });
+builder.AddRedisDistributedCache(connectionName: "cache");
 
 var app = builder.Build();
 app.UseCors();

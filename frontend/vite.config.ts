@@ -3,7 +3,6 @@ import autoprefixer from "autoprefixer";
 import tailwindcss from "tailwindcss";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-
 export default defineConfig({
   css: {
     postcss: {
@@ -12,9 +11,10 @@ export default defineConfig({
   },
   plugins: [reactRouter(), tsconfigPaths()],
   server: {
+   port: parseInt(process.env['PORT']!),
     proxy: {
       '/api': {
-        target: 'http://localhost:5295',
+        target: process.env["services__backend__http__0"],
         changeOrigin: true,
         secure: false,
       },
