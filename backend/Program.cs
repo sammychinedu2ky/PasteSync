@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddSignalR();
+builder.AddServiceDefaults();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policyBuilder =>
