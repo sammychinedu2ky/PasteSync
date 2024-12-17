@@ -1,5 +1,5 @@
 var builder = DistributedApplication.CreateBuilder(args);
-var cache = builder.AddRedis("cache").WithRedisInsight();
+var cache = builder.AddRedis("cache").WithRedisInsight().WithAddCustomPage();
 var backendApi = builder.AddProject<Projects.backend>("backend");
 var frontend = builder.AddNpmApp("frontend", "../frontend", "dev");
 backendApi.WithReference(cache)
