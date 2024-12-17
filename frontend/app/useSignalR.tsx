@@ -35,7 +35,6 @@ export function useSignalR(boardId: string) {
         newConnection.on("ReceiveText", (content: string) => {
             setBoardContent(content);
         });
-        console.log('i am in the use effect')
         return () => {
             if (newConnection.state === HubConnectionState.Connected) {
                 newConnection.stop();
@@ -47,7 +46,6 @@ export function useSignalR(boardId: string) {
         if (connectionRef.current?.state === HubConnectionState.Connected) {
             try {
                 await connectionRef.current.invoke("UpdateBoard", boardId, content);
-                console.log("Board content updated");
             } catch (error) {
                 console.error("Error updating board:", error);
             }

@@ -8,13 +8,13 @@ import { FaClipboard } from "react-icons/fa";
 import { Link } from "react-router";
 
 export function RealTimeBoard({ boardData, boardId }: { boardData: any; boardId: string }) {
+   
     const { boardContent, setBoardContent, updateBoard } = useSignalR(boardId);
     const [saving, setSaving] = useState(false);
     const [lastSaved, setLastSaved] = useState<string | null>(null);
     const [debouncedBoardContent] = useDebounce(null, 500);
     const [isTyping, setIsTyping] = useState(false);
     const editorRef = useRef<any>(null);
-    console.log('I am in the component')
     useEffect(() => {
         if (boardData && boardData.length > 0) {
             setBoardContent(boardData);
@@ -82,7 +82,6 @@ export function RealTimeBoard({ boardData, boardId }: { boardData: any; boardId:
                        <Link to="/" className="text-3xl font-bold mb-4 text-blue-600 hover:underline">
                 PasteSync
             </Link>
-
             <div className="w-3/4 h-64 border border-gray-300 rounded-lg shadow-sm relative">
                 <MonacoEditor
                     height="100%"

@@ -1,9 +1,7 @@
-import { useNavigation, redirect, useLoaderData } from "react-router";
+import { redirect, useLoaderData } from "react-router";
 import type { Route } from "./+types/home";
 import { RealTimeBoard } from "~/RealTimeBoard/realTimeBoard";
-import { toast, ToastContainer } from "react-toastify";     // Import toast for notifications
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect } from "react";
 
 
 type LoaderData = {
@@ -27,7 +25,7 @@ const fetchBoardData = async (boardId: string) => {
     return response.text();
   } catch (error) {
     console.error("Error fetching board data:", error);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return null;
   }
 };
@@ -38,20 +36,14 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
     return redirect("/404");
   }
   let boardData = await fetchBoardData(boardId);
-  // if (!boardData) {
-  //  // toast.error("Failed to fetch board data.");
-  //   return redirect("/404");
-  // }
+
   return { boardData, boardId };
 }
 
-// export function HydrateFallback() {
-//   return <p>Loading Board</p>;
-// }
 
 export default function BoardRoute() {
   const loaderData = useLoaderData<LoaderData>();
-  
+
 
 
   const { boardData, boardId } = loaderData;
