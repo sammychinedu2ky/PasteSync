@@ -6,12 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddSignalR();
-
+builder.AddServiceDefaults();
 builder.Services.AddSingleton<IBoardService, BoardService>();
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
-});
+builder.AddRedisDistributedCache(connectionName: "cache");
 
 var app = builder.Build();
 
